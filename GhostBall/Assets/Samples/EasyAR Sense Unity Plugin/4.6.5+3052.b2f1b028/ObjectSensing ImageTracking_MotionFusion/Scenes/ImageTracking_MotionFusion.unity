@@ -844,6 +844,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 576393124}
+  - component: {fileID: 576393129}
+  - component: {fileID: 576393128}
   - component: {fileID: 576393127}
   - component: {fileID: 576393126}
   - component: {fileID: 576393125}
@@ -862,14 +864,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 576393123}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0.70710677, y: 0, z: 0, w: 0.70710677}
   m_LocalPosition: {x: 0, y: 0.000000010643, z: -0.606}
   m_LocalScale: {x: 0.71798223, y: 0.13655329, z: 0.71798223}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5266014463256117086}
   m_Father: {fileID: 4758730854803131}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 90}
 --- !u!136 &576393125
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -943,6 +945,34 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 576393123}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &576393128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 576393123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0925e7f02a627f4d873fc31f1402173, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 576393123}
+  dragSensitivity: 0.3
+--- !u!114 &576393129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 576393123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fed0a509af7eb5d458b02e3c63050240, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetObject: {fileID: 576393123}
+  sparkEffect: {fileID: 1936488993528872914}
 --- !u!1 &593470844
 GameObject:
   m_ObjectHideFlags: 0
@@ -2771,7 +2801,7 @@ GameObject:
   - component: {fileID: 1341140801}
   - component: {fileID: 1341140800}
   m_Layer: 0
-  m_Name: Sample
+  m_Name: ARSessionManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2786,15 +2816,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1341140799}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 48b23ea2d92957343a2f70ef9049f076, type: 3}
+  m_Script: {fileID: 11500000, guid: 2ac5decae721dd7419486283d2626a78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CurrentMotionState: 0
   BackButton: {fileID: 114318064043759317}
   Status: {fileID: 4622841430103754826}
   Session: {fileID: 1425372193}
   MainCamera: {fileID: 779855300}
-  targetObject: {fileID: 576393123}
-  sparkEffect: {fileID: 1936488993528872914}
 --- !u!4 &1341140801
 Transform:
   m_ObjectHideFlags: 0
