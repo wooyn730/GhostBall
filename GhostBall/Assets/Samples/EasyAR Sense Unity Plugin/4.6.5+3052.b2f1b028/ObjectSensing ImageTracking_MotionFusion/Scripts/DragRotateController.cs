@@ -126,7 +126,7 @@ public class DragRotateController : MonoBehaviour
             sessionManager.CurrentMotionState = ARSessionManager.MotionState.Drag;
         float startX = xRot;
         float targetX = FindNearest90(xRot);
-        float duration = 1f;
+        float duration = 0.5f;
         float elapsed = 0f;
         float curY = yRot, curZ = zRot;
         while (elapsed < duration)
@@ -142,15 +142,27 @@ public class DragRotateController : MonoBehaviour
             elapsed += Time.deltaTime;
             yield return null;
         }
-        xRot = targetX;
+        // 360으로 나눴을 때 90이 되도록 보정
+        xRot = NormalizeTo90(xRot);
         targetObject.transform.rotation = Quaternion.Euler(xRot, curY, curZ);
+        // 내부 변수는 90으로 세팅 (티 안나게)
+        xRot = 90f;
         if (sessionManager != null)
             sessionManager.CurrentMotionState = ARSessionManager.MotionState.None;
     }
 
+    // x가 90 + 360n이 되도록 보정
+    private float NormalizeTo90(float x)
+    {
+        float normalized = ((x - 90f) % 360f + 360f) % 360f + 90f;
+        if (normalized > 450f) normalized -= 360f;
+        return normalized;
+    }
+
     private float FindNearest90(float angle)
     {
-        float delta = Mathf.DeltaAngle(angle, 90f);
-        return angle - delta;
+        // 90 + 360n에 가장 가까운 값
+        float n = Mathf.Round((angle - 90f) / 360f);
+        return 90f + 360f * n;
     }
 } 
