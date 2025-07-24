@@ -10,6 +10,7 @@ using easyar;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 namespace Sample
 {
@@ -25,6 +26,8 @@ namespace Sample
         private static Optional<DateTime> trialCounter;
 
         public GameObject targetObject; // 회전시킬 오브젝트
+
+        private bool isRotating = false;
 
 #if UNITY_EDITOR
         [UnityEditor.InitializeOnLoadMethod]
@@ -123,12 +126,14 @@ namespace Sample
                 }
             }
 
+            if (isRotating)
+                return; // 회전 중엔 입력 무시
+
             if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
-                // 오브젝트 Z축으로 90도 회전
-                if (targetObject != null)
+                if (!isRotating)
                 {
-                    targetObject.transform.Rotate(0f, 0f, 90f);
+                    StartCoroutine(RotateAndReturn(targetObject));
                 }
             }
         }
@@ -136,6 +141,45 @@ namespace Sample
         public void SwitchMotionFusion(bool on)
         {
             tracker.ResultType = new ImageTrackerFrameFilter.ResultParameters { EnablePersistentTargetInstance = on, EnableMotionFusion = on };
+        }
+
+        public void OnRotateButtonClicked()
+        {
+            if (!isRotating)
+                StartCoroutine(RotateAndReturn(targetObject));
+        }
+
+        // 터치 시 0.5초 동안 X축 -90도 회전, 3초 유지, 0.5초 동안 X축 +90도 회전(원위치)
+        private IEnumerator RotateAndReturn(GameObject targetObject)
+        {
+            isRotating = true;
+            Quaternion startRotation = targetObject.transform.rotation;
+            Quaternion rotated = startRotation * Quaternion.Euler(-90f, 0, 0);
+            float duration = 0.5f;
+            float elapsed = 0f;
+
+            // 0.5초 동안 -90도 회전
+            while (elapsed < duration)
+            {
+                targetObject.transform.rotation = Quaternion.Slerp(startRotation, rotated, elapsed / duration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            targetObject.transform.rotation = rotated;
+
+            // 3초 유지
+            yield return new WaitForSeconds(3f);
+
+            // 0.5초 동안 +90도 회전(원위치)
+            elapsed = 0f;
+            while (elapsed < duration)
+            {
+                targetObject.transform.rotation = Quaternion.Slerp(rotated, startRotation, elapsed / duration);
+                elapsed += Time.deltaTime;
+                yield return null;
+            }
+            targetObject.transform.rotation = startRotation;
+            isRotating = false;
         }
     }
 }
