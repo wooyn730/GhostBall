@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 963aaa1ae868b0140b6456db09120440, type: 3}
+  m_Name: EasyAR Settings
+  m_EditorClassIdentifier: 
+  LicenseKey: fkGISnpSkFZiNKI99j5YQHooYfVI/KeVp/+gMU5zvmF6Y7h8Tm6vMQEiuXZPaL5/UmezZwwz61Ncbbp6Vy64fFYi9zFWYahnXnKQdkJJvzEBMfcxV2m4dlVzvmAZOoBoGWKufV9svlpfc/kpYF33MU1hqXpabq9gGTqAMVhvtn5ObrJnQiKGPxlwt3JPZrRhVnP5KWAirHpVZLRkSCL3MVZhuDFmLPl+VGSuf15z+SlgIqh2VXO+PXJtunReVKlyWGuyfVwi9zFIZbVgXi6Yf1R1v0FeY7R0VWmvelRu+T8Zc759SGX1QV5jtGFfabV0GSz5YF5uqHYVT7l5XmOvR0lhuHhSbrwxFyKodlVzvj1odal1WmO+R0lhuHhSbrwxFyKodlVzvj1ocLphSGWIY1p0snJXTbpjGSz5YF5uqHYVTbRnUm+1R0lhuHhSbrwxFyKodlVzvj1/ZbVgXlOrck9pun92YasxFyKodlVzvj14QZ9HSWG4eFJuvDFmLPl2Q3CyYV5Usn5eU69yVnD5KVV1t38XIrJgd2+4clci4XVabKh2RiygMVl1tXdXZZJ3SCLhSBljtH4Vd7R8QmW0fRVns3xIdLlyV2z5ThcirXJJabp9T3P5KWAiuHxWba59UnSiMWYs+WNXYa91VHK2YBk6gDFabr9hVGm/MWYs+X5UZK5/XnP5KWAiqHZVc749cm26dF5UqXJYa7J9XCL3MUhltWBeLph/VHW/QV5jtHRVaa96VG75Pxlzvn1IZfVBXmO0YV9ptXQZLPlgXm6odhVPuXleY69HSWG4eFJuvDEXIqh2VXO+PWh1qXVaY75HSWG4eFJuvDEXIqh2VXO+PWhwumFIZYhjWnSycldNumMZLPlgXm6odhVNtGdSb7VHSWG4eFJuvDEXIqh2VXO+PX9ltWBeU6tyT2m6f3ZhqzEXIqh2VXO+PXhBn0dJYbh4Um68MWYs+XZDcLJhXlSyfl5Tr3JWcPkpVXW3fxcismB3b7hyVyLhdVpsqHZGLKAxWXW1d1dlkndIIuFIGSKGPxl2umFSYbVnSCLhSBljtH5WdbV6T3n5Thciq39adL18SW2oMQFb+XpUc/lOFyK2fF91t3ZIIuFIGXO+fUhl9VpWYbx2b3K6cFBptXQZLPlgXm6odhVDt3xOZIl2WG+8fVJ0snxVIvcxSGW1YF4uiXZYb6l3Um68MRciqHZVc749dGKxdlh0j2FaY7B6VWf5Pxlzvn1IZfVATnK9clhlj2FaY7B6VWf5Pxlzvn1IZfVAS2GpYF5Tq3JPabp/dmGrMRciqHZVc749dm+velRuj2FaY7B6VWf5Pxlzvn1IZfVXXm6odmhwumdSYbdeWnD5Pxlzvn1IZfVQekSPYVpjsHpVZ/lOFyK+a0tpqXZvabZ2aHS6fksi4X1ObLc/GWmoX1Rjun8ZOr1yV3O+bmZ9VkqB+2k4D0gjwk2sHG/00jSt97cdvm2AJih5iKyVvMCvqKp0UBhj03yc7Yfq9PA91/7n8obYfbcdWjIR67Gel/oXQl6MyZZh0PULrpxRhPhg7YYCGuHWpbBExmMndL9SY2g+tXHPJP8pU7gFSUewYQvmDy0uMUJ3nT1PT9yilG7narLXHTVaJLGJXWRbjquxGTp0QiDyW4mC2RAiCWLhsGi15M3OdhR82UbU4wfNnbjBrKstgPQv+djo0OBOXZpWdJ6AMJMaDZAZIZhPflv1PoIdS+2EOMLyr2/QKxTUKie1t+0K/FrCurDBsArTuyPHbjtzmvskQoe30pWDOwDbEw==
+  InitializeOnStartup: 1
+  Permissions:
+    CameraDevice: 1
+    VideoRecording: 1
+    Mega: 1
+  GizmoConfig:
+    ImageTarget:
+      EnableImageFile: 1
+      EnableTargetDataFile: 1
+      EnableTarget: 1
+    ObjectTarget:
+      Enable: 1
+  GlobalSpatialMapServiceConfig:
+    APIKey: 
+    APISecret: 
+    SparseSpatialMapAppID: 
+  GlobalCloudRecognizerServiceConfig:
+    ServerAddress: 
+    APIKey: 
+    APISecret: 
+    CloudRecognizerAppID: 
+  GlobalMegaLocalizationServiceConfig:
+    ServerAddress: 
+    APIKey: 
+    APISecret: 
+    AppID: 
+  GenerateXMLDoc: 1
+  ARCoreSDK: 0
+  AREngineSDK: 0
+  DisableARCoreAREngine: 0
+  Verify32bitOnlyARCoreWhenBuild: 1
+  VerifyLicenseWhenBuild: 1
+  WorkaroundForUnity:
+    URP17RG_DX11_RuinedScene: 1
+    URP17RG_IOS_Glitches_Partial: 0
