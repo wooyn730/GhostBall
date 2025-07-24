@@ -24,6 +24,8 @@ namespace Sample
         private ImageTrackerFrameFilter tracker;
         private static Optional<DateTime> trialCounter;
 
+        public GameObject targetObject; // 회전시킬 오브젝트
+
 #if UNITY_EDITOR
         [UnityEditor.InitializeOnLoadMethod]
         static void ImportSampleStreamingAssets()
@@ -118,6 +120,15 @@ namespace Sample
                 {
                     var time = Math.Max(0, (int)(trialCounter.Value - DateTime.Now).TotalSeconds + 100);
                     Status.text += $"\n\nEasyAR License for {Session.Assembly.FrameSource.GetType()} will timeout for current process within {time} seconds. (Personal Edition Only)";
+                }
+            }
+
+            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+            {
+                // 오브젝트 Z축으로 90도 회전
+                if (targetObject != null)
+                {
+                    targetObject.transform.Rotate(0f, 0f, 90f);
                 }
             }
         }

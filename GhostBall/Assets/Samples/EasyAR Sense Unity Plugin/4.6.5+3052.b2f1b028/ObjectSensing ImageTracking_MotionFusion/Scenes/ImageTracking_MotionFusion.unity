@@ -2539,7 +2539,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1035220958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3625,6 +3625,7 @@ MonoBehaviour:
   Status: {fileID: 4622841430103754826}
   Session: {fileID: 1425372193}
   MainCamera: {fileID: 779855300}
+  targetObject: {fileID: 576393123}
 --- !u!4 &1341140801
 Transform:
   m_ObjectHideFlags: 0
@@ -5467,7 +5468,7 @@ GameObject:
   - component: {fileID: 4758730854803131}
   - component: {fileID: 114749824398582359}
   m_Layer: 0
-  m_Name: ImageTarget-namecard
+  m_Name: ImageTarget-redCard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5635,7 +5636,7 @@ MonoBehaviour:
   SourceType: 0
   ImageFileSource:
     PathType: 1
-    Path: ghostcard.png
+    Path: cardRed.png
     Name: namecard
     Scale: 0.297
   TargetDataFileSource:
