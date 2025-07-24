@@ -25,7 +25,8 @@ namespace Sample
         private ImageTrackerFrameFilter tracker;
         private static Optional<DateTime> trialCounter;
 
-        public GameObject targetObject; // 회전시킬 오브젝트
+        [SerializeField] private GameObject targetObject; // 가상 오브젝트
+        [SerializeField] private GameObject sparkEffect; // 전기 효과
 
         private bool isRotating = false;
 
@@ -152,6 +153,9 @@ namespace Sample
         // 터치 시 0.5초 동안 X축 -90도 회전, 3초 유지, 0.5초 동안 X축 +90도 회전(원위치)
         private IEnumerator RotateAndReturn(GameObject targetObject)
         {
+            if (sparkEffect != null)
+                sparkEffect.SetActive(true); // 코루틴 시작 시 이펙트 활성화
+
             isRotating = true;
             Quaternion startRotation = targetObject.transform.rotation;
             Quaternion rotated = startRotation * Quaternion.Euler(-90f, 0, 0);
@@ -180,6 +184,9 @@ namespace Sample
             }
             targetObject.transform.rotation = startRotation;
             isRotating = false;
+
+            if (sparkEffect != null)
+                sparkEffect.SetActive(false); // 코루틴 끝날 때 이펙트 비활성화
         }
     }
 }
