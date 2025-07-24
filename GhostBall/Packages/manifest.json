@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.easyar.sense": "file:C:/Users/bethe/Downloads/EasyARSenseUnityPlugin_4.6.5+3052.b2f1b028/com.easyar.sense-4.6.5+3052.b2f1b028.tgz",
     "com.unity.collab-proxy": "2.8.2",
     "com.unity.feature.development": "1.0.1",
     "com.unity.textmeshpro": "3.0.6",
