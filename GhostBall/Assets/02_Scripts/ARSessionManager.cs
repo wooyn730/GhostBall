@@ -119,7 +119,12 @@ public class ARSessionManager : MonoBehaviour
         {
             if (redCard.CurrentMotionState == Card.MotionState.DoubleTap && blueCard.gameObject.activeSelf)
             {
-                // TODO: 합체 로직 실행
+                // 각 카드의 TapRotateController의 이펙트/오브젝트 비활성화
+                var redTap = redCard.GetComponentInChildren<TapRotateController>();
+                if (redTap != null) redTap.DeactivateAllEffects();
+                var blueTap = blueCard.GetComponentInChildren<TapRotateController>();
+                if (blueTap != null) blueTap.DeactivateAllEffects();
+                // (추가) 합체 이펙트 등 원하는 동작
             }
         }
     }

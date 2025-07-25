@@ -164,4 +164,11 @@ public class TapRotateController : MonoBehaviour
         }
         waitingForSecondTap = false;
     }
+
+    public void DeactivateAllEffects()
+    {
+        if (sparkEffect != null) sparkEffect.SetActive(false);
+        if (orbEffect != null) orbEffect.SetActive(false);
+        if (otherCard != null) otherCard.SetActive(false);
+    }
 } 
