@@ -5,6 +5,7 @@ public class TapRotateController : MonoBehaviour
 {
     [SerializeField] private GameObject targetObject;
     [SerializeField] private GameObject sparkEffect;
+    [SerializeField] private GameObject orbEffect;
     private bool isRotating = false;
     private ARSessionManager sessionManager;
     private Vector2 tapStartPos;
@@ -98,7 +99,7 @@ public class TapRotateController : MonoBehaviour
             sessionManager.CurrentMotionState = ARSessionManager.MotionState.Tap;
         if (sparkEffect != null)
             sparkEffect.SetActive(true);
-
+        
         Quaternion startRotation = targetObject.transform.rotation;
         Quaternion rotated = startRotation * Quaternion.Euler(-90f, 0, 0);
         float duration = 0.5f;
@@ -137,6 +138,8 @@ public class TapRotateController : MonoBehaviour
             sessionManager.CurrentMotionState = ARSessionManager.MotionState.DoubleTap;
         if (sparkEffect != null)
             sparkEffect.SetActive(true);
+        if (orbEffect != null)
+            orbEffect.SetActive(true);
 
         Quaternion startRotation = targetObject.transform.rotation;
         Quaternion rotated = startRotation * Quaternion.Euler(-90f, 0, 0);
