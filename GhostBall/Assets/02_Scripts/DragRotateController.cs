@@ -12,18 +12,13 @@ public class DragRotateController : MonoBehaviour
     private Vector2 dragStartPos;
     private float touchStartTime;
     private Coroutine returnCoroutine;
-    private ARSessionManager sessionManager;
+    [SerializeField] private Card card;
     private const float dragThreshold = 10f;
     private const float timeThreshold = 0.2f;
 
-    private void Start()
-    {
-        sessionManager = FindObjectOfType<ARSessionManager>();
-    }
-
     private void Update()
     {
-        if (sessionManager == null || sessionManager.CurrentMotionState != ARSessionManager.MotionState.None)
+        if (card == null || card.CurrentMotionState != Card.MotionState.None)
             return;
 #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
@@ -122,8 +117,8 @@ public class DragRotateController : MonoBehaviour
 
     private IEnumerator RotateXToNearest90()
     {
-        if (sessionManager != null)
-            sessionManager.CurrentMotionState = ARSessionManager.MotionState.Drag;
+        if (card != null)
+            card.CurrentMotionState = Card.MotionState.Drag;
         float startX = xRot;
         float targetX = FindNearest90(xRot);
         float angleDiff = Mathf.Abs(Mathf.DeltaAngle(startX, targetX));
@@ -134,8 +129,8 @@ public class DragRotateController : MonoBehaviour
         {
             if (isDragging)
             {
-                if (sessionManager != null)
-                    sessionManager.CurrentMotionState = ARSessionManager.MotionState.None;
+                if (card != null)
+                    card.CurrentMotionState = Card.MotionState.None;
                 yield break;
             }
             xRot = Mathf.LerpAngle(startX, targetX, elapsed / duration);
@@ -148,8 +143,8 @@ public class DragRotateController : MonoBehaviour
         targetObject.transform.rotation = Quaternion.Euler(xRot, curY, curZ);
         // 내부 변수는 90으로 세팅 (티 안나게)
         xRot = 90f;
-        if (sessionManager != null)
-            sessionManager.CurrentMotionState = ARSessionManager.MotionState.None;
+        if (card != null)
+            card.CurrentMotionState = Card.MotionState.None;
     }
 
     // x가 90 + 360n이 되도록 보정

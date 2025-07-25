@@ -12,6 +12,8 @@ public class ARSessionManager : MonoBehaviour
     public Text Status;
     public ARSession Session;
     public Camera MainCamera;
+    public Card redCard;
+    public Card blueCard;
 
     private string deviceModel = string.Empty;
     private ImageTrackerFrameFilter tracker;
@@ -110,6 +112,15 @@ public class ARSessionManager : MonoBehaviour
             {
                 var time = Math.Max(0, (int)(trialCounter.Value - DateTime.Now).TotalSeconds + 100);
                 Status.text += $"\n\nEasyAR License for {Session.Assembly.FrameSource.GetType()} will timeout for current process within {time} seconds. (Personal Edition Only)";
+            }
+        }
+
+        // 카드 합체 조건 체크
+        if (redCard != null && blueCard != null)
+        {
+            if (redCard.CurrentMotionState == Card.MotionState.DoubleTap && blueCard.gameObject.activeSelf)
+            {
+                // TODO: 합체 로직 실행
             }
         }
     }

@@ -3,11 +3,12 @@ using System.Collections;
 
 public class TapRotateController : MonoBehaviour
 {
+    [SerializeField] private Card card;
     [SerializeField] private GameObject targetObject;
     [SerializeField] private GameObject sparkEffect;
     [SerializeField] private GameObject orbEffect;
+    [SerializeField] private GameObject otherCard;
     private bool isRotating = false;
-    private ARSessionManager sessionManager;
     private Vector2 tapStartPos;
     private float tapStartTime;
     private const float dragThreshold = 10f;
@@ -16,16 +17,11 @@ public class TapRotateController : MonoBehaviour
     private const float doubleTapMaxDelay = 0.3f;
     private bool waitingForSecondTap = false;
 
-    private void Start()
-    {
-        sessionManager = FindObjectOfType<ARSessionManager>();
-    }
-
     private void Update()
     {
-        if (isRotating || sessionManager == null)
+        if (isRotating)
             return;
-        if (sessionManager.CurrentMotionState == ARSessionManager.MotionState.DoubleTap)
+        if (card != null && card.CurrentMotionState == Card.MotionState.DoubleTap)
             return;
 #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
@@ -95,8 +91,8 @@ public class TapRotateController : MonoBehaviour
     private IEnumerator RotateAndReturn(GameObject targetObject)
     {
         isRotating = true;
-        if (sessionManager != null)
-            sessionManager.CurrentMotionState = ARSessionManager.MotionState.Tap;
+        if (card != null)
+            card.CurrentMotionState = Card.MotionState.Tap;
         if (sparkEffect != null)
             sparkEffect.SetActive(true);
         
@@ -124,8 +120,8 @@ public class TapRotateController : MonoBehaviour
         }
         targetObject.transform.rotation = startRotation;
         isRotating = false;
-        if (sessionManager != null)
-            sessionManager.CurrentMotionState = ARSessionManager.MotionState.None;
+        if (card != null)
+            card.CurrentMotionState = Card.MotionState.None;
         if (sparkEffect != null)
             sparkEffect.SetActive(false);
     }
@@ -134,8 +130,8 @@ public class TapRotateController : MonoBehaviour
     private IEnumerator RotateOnly(GameObject targetObject)
     {
         isRotating = true;
-        if (sessionManager != null)
-            sessionManager.CurrentMotionState = ARSessionManager.MotionState.DoubleTap;
+        if (card != null)
+            card.CurrentMotionState = Card.MotionState.DoubleTap;
         if (sparkEffect != null)
             sparkEffect.SetActive(true);
         if (orbEffect != null)
@@ -153,6 +149,9 @@ public class TapRotateController : MonoBehaviour
             yield return null;
         }
         targetObject.transform.rotation = rotated;
+
+        if (otherCard != null)
+            otherCard.SetActive(true);
     }
 
     // 단일탭 대기 코루틴
