@@ -11,6 +11,9 @@ public class TapRotateController : MonoBehaviour
     private float tapStartTime;
     private const float dragThreshold = 10f;
     private const float timeThreshold = 0.2f;
+    private float lastTapTime = 0f;
+    private const float doubleTapMaxDelay = 0.3f;
+    private bool waitingForSecondTap = false;
 
     private void Start()
     {
@@ -19,7 +22,9 @@ public class TapRotateController : MonoBehaviour
 
     private void Update()
     {
-        if (isRotating || sessionManager == null || sessionManager.CurrentMotionState != ARSessionManager.MotionState.None)
+        if (isRotating || sessionManager == null)
+            return;
+        if (sessionManager.CurrentMotionState == ARSessionManager.MotionState.DoubleTap)
             return;
 #if UNITY_EDITOR
         if (Input.GetMouseButtonDown(0))
@@ -33,8 +38,21 @@ public class TapRotateController : MonoBehaviour
             float tapTime = Time.time - tapStartTime;
             if (tapDist <= dragThreshold && tapTime <= timeThreshold)
             {
-                if (!isRotating)
-                    StartCoroutine(RotateAndReturn(targetObject));
+                if (!waitingForSecondTap)
+                {
+                    // 첫 번째 탭 Up
+                    waitingForSecondTap = true;
+                    lastTapTime = Time.time;
+                    StartCoroutine(SingleTapDelay());
+                }
+                else
+                {
+                    // 두 번째 탭 Up (더블탭)
+                    waitingForSecondTap = false;
+                    StopAllCoroutines(); // 단일탭 대기 취소
+                    if (!isRotating)
+                        StartCoroutine(RotateOnly(targetObject));
+                }
             }
         }
 #else
@@ -52,8 +70,21 @@ public class TapRotateController : MonoBehaviour
                 float tapTime = Time.time - tapStartTime;
                 if (tapDist <= dragThreshold && tapTime <= timeThreshold)
                 {
-                    if (!isRotating)
-                        StartCoroutine(RotateAndReturn(targetObject));
+                    if (!waitingForSecondTap)
+                    {
+                        // 첫 번째 탭 Up
+                        waitingForSecondTap = true;
+                        lastTapTime = Time.time;
+                        StartCoroutine(SingleTapDelay());
+                    }
+                    else
+                    {
+                        // 두 번째 탭 Up (더블탭)
+                        waitingForSecondTap = false;
+                        StopAllCoroutines(); // 단일탭 대기 취소
+                        if (!isRotating)
+                            StartCoroutine(RotateOnly(targetObject));
+                    }
                 }
             }
         }
@@ -96,5 +127,39 @@ public class TapRotateController : MonoBehaviour
             sessionManager.CurrentMotionState = ARSessionManager.MotionState.None;
         if (sparkEffect != null)
             sparkEffect.SetActive(false);
+    }
+
+    // 더블탭 시 90도 회전만 하고 복귀하지 않는 코루틴
+    private IEnumerator RotateOnly(GameObject targetObject)
+    {
+        isRotating = true;
+        if (sessionManager != null)
+            sessionManager.CurrentMotionState = ARSessionManager.MotionState.DoubleTap;
+        if (sparkEffect != null)
+            sparkEffect.SetActive(true);
+
+        Quaternion startRotation = targetObject.transform.rotation;
+        Quaternion rotated = startRotation * Quaternion.Euler(-90f, 0, 0);
+        float duration = 0.5f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            targetObject.transform.rotation = Quaternion.Slerp(startRotation, rotated, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        targetObject.transform.rotation = rotated;
+    }
+
+    // 단일탭 대기 코루틴
+    private IEnumerator SingleTapDelay()
+    {
+        yield return new WaitForSeconds(doubleTapMaxDelay);
+        if (waitingForSecondTap && !isRotating)
+        {
+            StartCoroutine(RotateAndReturn(targetObject));
+        }
+        waitingForSecondTap = false;
     }
 } 

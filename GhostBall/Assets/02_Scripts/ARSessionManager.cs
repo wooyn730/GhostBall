@@ -6,7 +6,7 @@ using System.Collections;
 
 public class ARSessionManager : MonoBehaviour
 {
-    public enum MotionState { None, Tap, Drag }
+    public enum MotionState { None, Tap, Drag, DoubleTap }
     public MotionState CurrentMotionState = MotionState.None;
     public Button BackButton;
     public Text Status;
