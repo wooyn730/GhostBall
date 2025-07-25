@@ -6,14 +6,13 @@ using System.Collections;
 
 public class ARSessionManager : MonoBehaviour
 {
-    public enum MotionState { None, Tap, Drag, DoubleTap }
-    public MotionState CurrentMotionState = MotionState.None;
     public Button BackButton;
     public Text Status;
     public ARSession Session;
     public Camera MainCamera;
-    public Card redCard;
-    public Card blueCard;
+    [SerializeField] private Card redCard;
+    [SerializeField] private Card blueCard;
+    [SerializeField] private GameObject tmp;
 
     private string deviceModel = string.Empty;
     private ImageTrackerFrameFilter tracker;
