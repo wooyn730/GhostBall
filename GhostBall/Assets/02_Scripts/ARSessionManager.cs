@@ -10,12 +10,14 @@ public class ARSessionManager : MonoBehaviour
     [SerializeField] private Card redCard;
     [SerializeField] private Card blueCard;
     [SerializeField] private GameObject popUp;
+    [SerializeField] private GameObject mergeEffect;
 
     private string deviceModel = string.Empty;
     private ImageTrackerFrameFilter tracker;
     private static Optional<DateTime> trialCounter;
     private bool popUpShown = false;
     private Coroutine mergeEffectCoroutine;
+    private Coroutine trySummonCoroutine;
 
 #if UNITY_EDITOR
     [UnityEditor.InitializeOnLoadMethod]
@@ -114,29 +116,55 @@ public class ARSessionManager : MonoBehaviour
 
     private IEnumerator MergeEffect(DragRotateController redDrag, DragRotateController blueDrag)
     {
+        mergeEffect.SetActive(true);
         float mergeDistance = 0.1f; // 원하는 합체 거리
         if (redDrag != null) redDrag.StartMergeSpin(180f);
         if (blueDrag != null) blueDrag.StartMergeSpin(180f);
+        Vector3 redPos, bluePos, middle;
         // 가까워질 때까지 대기
         while (true)
         {
-            float dist = Vector3.Distance(redDrag.targetObject.transform.position, blueDrag.targetObject.transform.position);
-            Debug.Log($"GhostBall Distance: {dist}");
+            redPos = redDrag.targetObject.transform.position;
+            bluePos = blueDrag.targetObject.transform.position;
+            middle = (redPos + bluePos) * 0.5f;
+            float dist = Vector3.Distance(redPos, bluePos);
+            
+            // mergeEffect 위치를 매 프레임 중간점으로 이동
+            if (mergeEffect != null)
+            {
+                mergeEffect.transform.position = middle;
+            }
             if (dist <= mergeDistance)
                 break;
             yield return null;
         }
+        mergeEffect.SetActive(false);
         // 머지 스핀 멈춤
         if (redDrag != null) redDrag.StopMergeSpin();
         if (blueDrag != null) blueDrag.StopMergeSpin();
         // 두 오브젝트가 중간점 기준으로 각각 0.025만큼 떨어지도록 위치 설정
-        Vector3 redPos = redDrag.targetObject.transform.position;
-        Vector3 bluePos = blueDrag.targetObject.transform.position;
-        Vector3 middle = (redPos + bluePos) * 0.5f;
         Vector3 dir = (bluePos - redPos).normalized;
         float offset = 0.025f;
         redDrag.targetObject.transform.position = middle - dir * offset;
         blueDrag.targetObject.transform.position = middle + dir * offset;
         mergeEffectCoroutine = null;
+        // 머지 스핀 이후 TrySummon을 주기적으로 호출하는 코루틴 시작
+        if (trySummonCoroutine != null) StopCoroutine(trySummonCoroutine);
+        trySummonCoroutine = StartCoroutine(TrySummonLoop());
+    }
+
+    // TrySummon을 주기적으로 호출하는 코루틴
+    private IEnumerator TrySummonLoop()
+    {
+        while (true)
+        {
+            TrySummon();
+            yield return new WaitForSeconds(0.5f); // 0.5초마다 호출 (원하는 주기로 조정 가능)
+        }
+    }
+
+    private void TrySummon()
+    {
+        // TODO: 동작 구현
     }
 }
