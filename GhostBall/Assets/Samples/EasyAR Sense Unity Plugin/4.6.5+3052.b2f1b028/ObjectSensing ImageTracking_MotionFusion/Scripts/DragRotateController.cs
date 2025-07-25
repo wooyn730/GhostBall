@@ -126,7 +126,8 @@ public class DragRotateController : MonoBehaviour
             sessionManager.CurrentMotionState = ARSessionManager.MotionState.Drag;
         float startX = xRot;
         float targetX = FindNearest90(xRot);
-        float duration = 0.5f;
+        float angleDiff = Mathf.Abs(Mathf.DeltaAngle(startX, targetX));
+        float duration = Mathf.Clamp(angleDiff / 180f, 0.1f, 1f); // 180도=1초, 90도=0.5초, 45도=0.25초, 최소 0.1초, 최대 1초
         float elapsed = 0f;
         float curY = yRot, curZ = zRot;
         while (elapsed < duration)

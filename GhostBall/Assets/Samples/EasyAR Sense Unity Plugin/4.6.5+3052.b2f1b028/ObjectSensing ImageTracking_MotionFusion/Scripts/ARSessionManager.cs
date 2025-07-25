@@ -1,12 +1,4 @@
-﻿//================================================================================================================================
-//
-//  Copyright (c) 2015-2023 VisionStar Information Technology (Shanghai) Co., Ltd. All Rights Reserved.
-//  EasyAR is the registered trademark or trademark of VisionStar Information Technology (Shanghai) Co., Ltd in China
-//  and other countries for the augmented reality technology developed by VisionStar Information Technology (Shanghai) Co., Ltd.
-//
-//================================================================================================================================
-
-using easyar;
+﻿using easyar;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
@@ -125,11 +117,5 @@ public class ARSessionManager : MonoBehaviour
     public void SwitchMotionFusion(bool on)
     {
         tracker.ResultType = new ImageTrackerFrameFilter.ResultParameters { EnablePersistentTargetInstance = on, EnableMotionFusion = on };
-    }
-
-    public void OnRotateButtonClicked()
-    {
-        // This method is no longer relevant as input handling is removed.
-        // Keeping it here for now, but it will not function as intended.
     }
 }
