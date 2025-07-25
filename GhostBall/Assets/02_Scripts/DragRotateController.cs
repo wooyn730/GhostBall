@@ -3,9 +3,6 @@ using System.Collections;
 
 public class DragRotateController : MonoBehaviour
 {
-    [SerializeField] private GameObject targetObject;
-    [SerializeField] private float dragSensitivity = 0.3f;
-    private float xRot = 90f, yRot = 0f, zRot = 0f;
     private bool isDragging = false;
     private bool dragMotionActive = false;
     private Vector2 lastTouchPos;
@@ -15,6 +12,9 @@ public class DragRotateController : MonoBehaviour
     [SerializeField] private Card card;
     private const float dragThreshold = 10f;
     private const float timeThreshold = 0.2f;
+    [SerializeField] private float dragSensitivity = 0.3f;
+    [SerializeField] public GameObject targetObject;
+    public float xRot = 90f, yRot = 0f, zRot = 0f;
 
     private void Update()
     {
@@ -109,12 +109,6 @@ public class DragRotateController : MonoBehaviour
 #endif
     }
 
-    private void ApplyRotation()
-    {
-        if (targetObject != null)
-            targetObject.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
-    }
-
     private IEnumerator RotateXToNearest90()
     {
         if (card != null)
@@ -160,5 +154,39 @@ public class DragRotateController : MonoBehaviour
         // 90 + 360n에 가장 가까운 값
         float n = Mathf.Round((angle - 90f) / 360f);
         return 90f + 360f * n;
+    }
+
+    // MergeSpin 기능 구현
+    public Coroutine mergeSpinCoroutine;
+    public void StartMergeSpin(float speed = 180f)
+    {
+        xRot = 0f; yRot = 0f; zRot = 0f; // 머지스핀 시작 시 각도 0으로 초기화
+        if (mergeSpinCoroutine != null)
+            StopCoroutine(mergeSpinCoroutine);
+        mergeSpinCoroutine = StartCoroutine(MergeSpinLoop(speed));
+    }
+    public void StopMergeSpin()
+    {
+        if (mergeSpinCoroutine != null)
+        {
+            StopCoroutine(mergeSpinCoroutine);
+            mergeSpinCoroutine = null;
+        }
+    }
+    private IEnumerator MergeSpinLoop(float speed)
+    {
+        float curX = 0f, curZ = 0f; // x, z 각도 고정
+        while (true)
+        {
+            yRot -= speed * Time.deltaTime; // y축 반대 방향 회전
+            yRot %= 360f;
+            targetObject.transform.rotation = Quaternion.Euler(curX, yRot, curZ);
+            yield return null;
+        }
+    }
+    public void ApplyRotation()
+    {
+        if (targetObject != null)
+            targetObject.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
     }
 }

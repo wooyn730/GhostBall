@@ -4,7 +4,6 @@ using System.Collections;
 public class TapRotateController : MonoBehaviour
 {
     [SerializeField] private Card card;
-    [SerializeField] private GameObject targetObject;
     [SerializeField] private GameObject sparkEffect;
     [SerializeField] private GameObject orbEffect;
     [SerializeField] private GameObject otherCard;
@@ -16,6 +15,9 @@ public class TapRotateController : MonoBehaviour
     private float lastTapTime = 0f;
     private const float doubleTapMaxDelay = 0.3f;
     private bool waitingForSecondTap = false;
+
+    [SerializeField] public GameObject targetObject;
+    public float xRot = 90f, yRot = 0f, zRot = 0f;
 
     private void Update()
     {
@@ -170,5 +172,37 @@ public class TapRotateController : MonoBehaviour
         if (sparkEffect != null) sparkEffect.SetActive(false);
         if (orbEffect != null) orbEffect.SetActive(false);
         if (otherCard != null) otherCard.SetActive(false);
+    }
+
+    // MergeSpin 기능 구현
+    public Coroutine mergeSpinCoroutine;
+    public void StartMergeSpin(float speed = 180f)
+    {
+        if (mergeSpinCoroutine != null)
+            StopCoroutine(mergeSpinCoroutine);
+        mergeSpinCoroutine = StartCoroutine(MergeSpinLoop(speed));
+    }
+    public void StopMergeSpin()
+    {
+        if (mergeSpinCoroutine != null)
+        {
+            StopCoroutine(mergeSpinCoroutine);
+            mergeSpinCoroutine = null;
+        }
+    }
+    private IEnumerator MergeSpinLoop(float speed)
+    {
+        while (true)
+        {
+            xRot += speed * Time.deltaTime;
+            xRot %= 360f;
+            ApplyRotation();
+            yield return null;
+        }
+    }
+    public void ApplyRotation()
+    {
+        if (targetObject != null)
+            targetObject.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
     }
 } 

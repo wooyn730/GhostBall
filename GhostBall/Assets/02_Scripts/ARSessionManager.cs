@@ -1,6 +1,7 @@
 ﻿using easyar;
 using System;
 using UnityEngine;
+using System.Collections;
 
 public class ARSessionManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class ARSessionManager : MonoBehaviour
     private ImageTrackerFrameFilter tracker;
     private static Optional<DateTime> trialCounter;
     private bool popUpShown = false;
+    private Coroutine mergeEffectCoroutine;
 
 #if UNITY_EDITOR
     [UnityEditor.InitializeOnLoadMethod]
@@ -67,7 +69,11 @@ public class ARSessionManager : MonoBehaviour
                 if (redTap != null) redTap.DeactivateAllEffects();
                 var blueTap = blueCard.GetComponentInChildren<TapRotateController>();
                 if (blueTap != null) blueTap.DeactivateAllEffects();
-                // (추가) 합체 이펙트 등 원하는 동작
+                // 합체 이펙트 실행 (DragRotateController 인자로)
+                var redDrag = redCard.GetComponentInChildren<DragRotateController>();
+                var blueDrag = blueCard.GetComponentInChildren<DragRotateController>();
+                if (redDrag != null && blueDrag != null && mergeEffectCoroutine == null)
+                    mergeEffectCoroutine = StartCoroutine(MergeEffect(redDrag, blueDrag));
             }
         }
 
@@ -104,5 +110,33 @@ public class ARSessionManager : MonoBehaviour
             var drag = blueCard.GetComponentInChildren<DragRotateController>(true);
             if (drag != null) drag.enabled = enable;
         }
+    }
+
+    private IEnumerator MergeEffect(DragRotateController redDrag, DragRotateController blueDrag)
+    {
+        float mergeDistance = 0.1f; // 원하는 합체 거리
+        if (redDrag != null) redDrag.StartMergeSpin(180f);
+        if (blueDrag != null) blueDrag.StartMergeSpin(180f);
+        // 가까워질 때까지 대기
+        while (true)
+        {
+            float dist = Vector3.Distance(redDrag.targetObject.transform.position, blueDrag.targetObject.transform.position);
+            Debug.Log($"GhostBall Distance: {dist}");
+            if (dist <= mergeDistance)
+                break;
+            yield return null;
+        }
+        // 머지 스핀 멈춤
+        if (redDrag != null) redDrag.StopMergeSpin();
+        if (blueDrag != null) blueDrag.StopMergeSpin();
+        // 두 오브젝트가 중간점 기준으로 각각 0.025만큼 떨어지도록 위치 설정
+        Vector3 redPos = redDrag.targetObject.transform.position;
+        Vector3 bluePos = blueDrag.targetObject.transform.position;
+        Vector3 middle = (redPos + bluePos) * 0.5f;
+        Vector3 dir = (bluePos - redPos).normalized;
+        float offset = 0.025f;
+        redDrag.targetObject.transform.position = middle - dir * offset;
+        blueDrag.targetObject.transform.position = middle + dir * offset;
+        mergeEffectCoroutine = null;
     }
 }
