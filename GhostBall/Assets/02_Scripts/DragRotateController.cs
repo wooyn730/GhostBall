@@ -9,7 +9,7 @@ public class DragRotateController : MonoBehaviour
     private Vector2 dragStartPos;
     private float touchStartTime;
     private Coroutine returnCoroutine;
-    [SerializeField] private Card card;
+    [SerializeField] public Card card;
     private const float dragThreshold = 10f;
     private const float timeThreshold = 0.2f;
     [SerializeField] private float dragSensitivity = 0.3f;

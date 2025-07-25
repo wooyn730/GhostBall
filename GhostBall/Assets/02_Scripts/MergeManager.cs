@@ -6,9 +6,12 @@ public class MergeManager : MonoBehaviour
     [SerializeField] private GameObject mergeEffect;
     private Coroutine mergeEffectCoroutine;
     private Coroutine trySummonCoroutine;
+    private bool isMerging = false;
 
     public void StartMerge(DragRotateController redDrag, DragRotateController blueDrag)
     {
+        if (isMerging) return;
+        isMerging = true;
         if (mergeEffectCoroutine != null) StopCoroutine(mergeEffectCoroutine);
         mergeEffectCoroutine = StartCoroutine(MergeEffect(redDrag, blueDrag));
     }
@@ -40,9 +43,7 @@ public class MergeManager : MonoBehaviour
         mergeEffectCoroutine = null;
         if (trySummonCoroutine != null) StopCoroutine(trySummonCoroutine);
         trySummonCoroutine = StartCoroutine(TrySummonLoop());
-        // 머지 후 카드 상태를 None으로 초기화
-        if (redDrag != null && redDrag.card != null) redDrag.card.CurrentMotionState = Card.MotionState.None;
-        if (blueDrag != null && blueDrag.card != null) blueDrag.card.CurrentMotionState = Card.MotionState.None;
+        isMerging = false;
     }
 
     private IEnumerator TrySummonLoop()
@@ -56,6 +57,7 @@ public class MergeManager : MonoBehaviour
 
     private void TrySummon()
     {
+        Debug.Log("TrySummon() 호출됨");
         // TODO: 동작 구현
     }
 } 
