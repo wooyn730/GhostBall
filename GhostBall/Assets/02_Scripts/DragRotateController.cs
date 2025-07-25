@@ -15,9 +15,12 @@ public class DragRotateController : MonoBehaviour
     [SerializeField] private Card card;
     private const float dragThreshold = 10f;
     private const float timeThreshold = 0.2f;
+    [SerializeField] private GameObject popUp;
 
     private void Update()
     {
+        if (popUp != null && popUp.activeSelf)
+            return;
         if (card == null || card.CurrentMotionState != Card.MotionState.None)
             return;
 #if UNITY_EDITOR

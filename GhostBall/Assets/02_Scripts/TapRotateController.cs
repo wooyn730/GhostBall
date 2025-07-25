@@ -8,6 +8,7 @@ public class TapRotateController : MonoBehaviour
     [SerializeField] private GameObject sparkEffect;
     [SerializeField] private GameObject orbEffect;
     [SerializeField] private GameObject otherCard;
+    [SerializeField] private GameObject popUp;
     private bool isRotating = false;
     private Vector2 tapStartPos;
     private float tapStartTime;
@@ -19,6 +20,8 @@ public class TapRotateController : MonoBehaviour
 
     private void Update()
     {
+        if (popUp != null && popUp.activeSelf)
+            return;
         if (isRotating)
             return;
         if (card != null && card.CurrentMotionState == Card.MotionState.DoubleTap)

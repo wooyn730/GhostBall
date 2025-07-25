@@ -12,11 +12,12 @@ public class ARSessionManager : MonoBehaviour
     public Camera MainCamera;
     [SerializeField] private Card redCard;
     [SerializeField] private Card blueCard;
-    [SerializeField] private GameObject tmp;
+    [SerializeField] private GameObject popUp;
 
     private string deviceModel = string.Empty;
     private ImageTrackerFrameFilter tracker;
     private static Optional<DateTime> trialCounter;
+    private bool popUpShown = false;
 
 #if UNITY_EDITOR
     [UnityEditor.InitializeOnLoadMethod]
@@ -28,6 +29,8 @@ public class ARSessionManager : MonoBehaviour
 
     private void Awake()
     {
+        SetAllControllersEnabled(false);
+        
         var launcher = "AllSamplesLauncher";
         if (Application.CanStreamedLevelBeLoaded(launcher))
         {
@@ -127,10 +130,39 @@ public class ARSessionManager : MonoBehaviour
                 // (추가) 합체 이펙트 등 원하는 동작
             }
         }
-    }
 
+        if (!popUpShown && popUp != null)
+        {
+            if ((redCard != null && redCard.gameObject.activeSelf) ||
+                (blueCard != null && blueCard.gameObject.activeSelf))
+            {
+                popUp.SetActive(true);
+                popUpShown = true;
+            }
+        }
+    }
+    
     public void SwitchMotionFusion(bool on)
     {
         tracker.ResultType = new ImageTrackerFrameFilter.ResultParameters { EnablePersistentTargetInstance = on, EnableMotionFusion = on };
+    }
+
+    // TapRotateController, DragRotateController를 모두 활성화하는 함수
+    public void SetAllControllersEnabled(bool enable)
+    {
+        if (redCard != null)
+        {
+            var tap = redCard.GetComponentInChildren<TapRotateController>(true);
+            if (tap != null) tap.enabled = enable;
+            var drag = redCard.GetComponentInChildren<DragRotateController>(true);
+            if (drag != null) drag.enabled = enable;
+        }
+        if (blueCard != null)
+        {
+            var tap = blueCard.GetComponentInChildren<TapRotateController>(true);
+            if (tap != null) tap.enabled = enable;
+            var drag = blueCard.GetComponentInChildren<DragRotateController>(true);
+            if (drag != null) drag.enabled = enable;
+        }
     }
 }
