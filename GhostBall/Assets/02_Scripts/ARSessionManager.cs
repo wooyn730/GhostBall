@@ -70,7 +70,8 @@ public class ARSessionManager : MonoBehaviour
                 if (redTap != null) redTap.DeactivateAllEffects();
                 var blueTap = blueCard.GetComponentInChildren<TapRotateController>();
                 if (blueTap != null) blueTap.DeactivateAllEffects();
-                // 합체 이펙트 실행 (DragRotateController 인자로)
+
+                // 합체 이펙트 실행
                 var redDrag = redCard.GetComponentInChildren<DragRotateController>();
                 var blueDrag = blueCard.GetComponentInChildren<DragRotateController>();
                 if (redDrag != null && blueDrag != null)
@@ -94,7 +95,6 @@ public class ARSessionManager : MonoBehaviour
         tracker.ResultType = new ImageTrackerFrameFilter.ResultParameters { EnablePersistentTargetInstance = on, EnableMotionFusion = on };
     }
 
-    // TapRotateController, DragRotateController를 모두 활성화하는 함수
     public void SetAllControllersEnabled(bool enable)
     {
         if (redCard != null)

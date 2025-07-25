@@ -173,36 +173,4 @@ public class TapRotateController : MonoBehaviour
         if (orbEffect != null) orbEffect.SetActive(false);
         if (otherCard != null) otherCard.SetActive(false);
     }
-
-    // MergeSpin 기능 구현
-    public Coroutine mergeSpinCoroutine;
-    public void StartMergeSpin(float speed = 180f)
-    {
-        if (mergeSpinCoroutine != null)
-            StopCoroutine(mergeSpinCoroutine);
-        mergeSpinCoroutine = StartCoroutine(MergeSpinLoop(speed));
-    }
-    public void StopMergeSpin()
-    {
-        if (mergeSpinCoroutine != null)
-        {
-            StopCoroutine(mergeSpinCoroutine);
-            mergeSpinCoroutine = null;
-        }
-    }
-    private IEnumerator MergeSpinLoop(float speed)
-    {
-        while (true)
-        {
-            xRot += speed * Time.deltaTime;
-            xRot %= 360f;
-            ApplyRotation();
-            yield return null;
-        }
-    }
-    public void ApplyRotation()
-    {
-        if (targetObject != null)
-            targetObject.transform.rotation = Quaternion.Euler(xRot, yRot, zRot);
-    }
 } 

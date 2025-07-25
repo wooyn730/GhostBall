@@ -59,7 +59,6 @@ public class DragRotateController : MonoBehaviour
                 dragMotionActive = false;
                 returnCoroutine = StartCoroutine(RotateXToNearest90());
             }
-            // 클릭만 한 경우(드래그 아님)는 TapRotateController에서만 처리
         }
 #else
         if (Input.touchCount > 0)
@@ -103,7 +102,6 @@ public class DragRotateController : MonoBehaviour
                     dragMotionActive = false;
                     returnCoroutine = StartCoroutine(RotateXToNearest90());
                 }
-                // 클릭만 한 경우(드래그 아님)는 TapRotateController에서만 처리
             }
         }
 #endif
@@ -135,7 +133,7 @@ public class DragRotateController : MonoBehaviour
         // 360으로 나눴을 때 90이 되도록 보정
         xRot = NormalizeTo90(xRot);
         targetObject.transform.rotation = Quaternion.Euler(xRot, curY, curZ);
-        // 내부 변수는 90으로 세팅 (티 안나게)
+
         xRot = 90f;
         if (card != null)
             card.CurrentMotionState = Card.MotionState.None;
@@ -156,11 +154,10 @@ public class DragRotateController : MonoBehaviour
         return 90f + 360f * n;
     }
 
-    // MergeSpin 기능 구현
     public Coroutine mergeSpinCoroutine;
     public void StartMergeSpin(float speed = 180f)
     {
-        xRot = 0f; yRot = 0f; zRot = 0f; // 머지스핀 시작 시 각도 0으로 초기화
+        xRot = 0f; yRot = 0f; zRot = 0f; // 각도 초기화
         if (mergeSpinCoroutine != null)
             StopCoroutine(mergeSpinCoroutine);
         mergeSpinCoroutine = StartCoroutine(MergeSpinLoop(speed));
@@ -178,7 +175,7 @@ public class DragRotateController : MonoBehaviour
         float curX = 0f, curZ = 0f; // x, z 각도 고정
         while (true)
         {
-            yRot -= speed * Time.deltaTime; // y축 반대 방향 회전
+            yRot -= speed * Time.deltaTime; // y축 회전
             yRot %= 360f;
             targetObject.transform.rotation = Quaternion.Euler(curX, yRot, curZ);
             yield return null;
