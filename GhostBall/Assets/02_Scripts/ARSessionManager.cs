@@ -30,6 +30,7 @@ public class ARSessionManager : MonoBehaviour
     private void Awake()
     {
         SetAllControllersEnabled(false);
+        popUp.SetActive(false);
         
         var launcher = "AllSamplesLauncher";
         if (Application.CanStreamedLevelBeLoaded(launcher))
